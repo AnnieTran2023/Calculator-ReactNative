@@ -1,28 +1,46 @@
 import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
-import { StyleSheet, Text, View, TextInput, Button } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  Button,
+  FlatList,
+} from "react-native";
 
 export default function App() {
   const [result, setResult] = useState("0");
   const [firstNumber, setFirstNumber] = useState("");
   const [secondNumber, setSecondNumber] = useState("");
+  const [operation, setOperation] = useState("");
+  const [operations, setOperations] = useState([]);
   const addition = () => {
-    const sum = parseInt(firstNumber,10) + parseInt(secondNumber,10)
-    setResult(sum.toString())
-  }
+    const sum = parseInt(firstNumber, 10) + parseInt(secondNumber, 10);
+    setOperation(`${firstNumber} + ${secondNumber} = ${sum}`);
+    setOperations([...operations, operation]);
+    setResult(sum.toString());
+  };
   const substract = () => {
-    const minus = parseInt(firstNumber, 10) - parseInt(secondNumber,10)
-    setResult(minus.toString())
-  }
+    const minus = parseInt(firstNumber, 10) - parseInt(secondNumber, 10);
+    setOperation(`${firstNumber} - ${secondNumber} = ${minus}`);
+    setOperations([...operations, operation]);
+    setResult(minus.toString());
+  };
   return (
     <View style={styles.container}>
       <View style={styles.inputContainer}>
+        <FlatList
+          data={operations}
+          renderItem={({ item }) => <Text>{item}</Text>}
+        />
         <Text style={{ fontWeight: 700, fontSize: 20 }}>Result: {result}</Text>
         <TextInput
           placeholder="Enter first number"
           onChangeText={(firstNumber) => setFirstNumber(firstNumber)}
           value={firstNumber}
-          keyboardType="numeric"
+          keyboardT
+          ype="numeric"
           style={styles.input}
         />
         <TextInput
@@ -54,7 +72,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: "row",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
   },
   input: {
     borderColor: "black",
