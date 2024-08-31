@@ -13,39 +13,44 @@ export default function App() {
   const [result, setResult] = useState("0");
   const [firstNumber, setFirstNumber] = useState("");
   const [secondNumber, setSecondNumber] = useState("");
-  const [operation, setOperation] = useState("");
   const [operations, setOperations] = useState([]);
+
   const addition = () => {
     const sum = parseInt(firstNumber, 10) + parseInt(secondNumber, 10);
-    setOperation(`${firstNumber} + ${secondNumber} = ${sum}`);
-    setOperations([...operations, operation]);
+    const currentOperation = `${firstNumber} + ${secondNumber} = ${sum}`;
+    setOperations([...operations, currentOperation]);
     setResult(sum.toString());
+    // Clear the input fields after performing the operation
+    setFirstNumber("");
+    setSecondNumber("");
   };
-  const substract = () => {
-    const minus = parseInt(firstNumber, 10) - parseInt(secondNumber, 10);
-    setOperation(`${firstNumber} - ${secondNumber} = ${minus}`);
-    setOperations([...operations, operation]);
-    setResult(minus.toString());
+
+  const subtraction = () => {
+    const difference = parseInt(firstNumber, 10) - parseInt(secondNumber, 10);
+    const currentOperation = `${firstNumber} - ${secondNumber} = ${difference}`;
+    setOperations([...operations, currentOperation]);
+    setResult(difference.toString());
+    // Clear the input fields after performing the operation
+    setFirstNumber("");
+    setSecondNumber("");
   };
+
   return (
     <View style={styles.container}>
       <View style={styles.inputContainer}>
-        <FlatList
-          data={operations}
-          renderItem={({ item }) => <Text>{item}</Text>}
-        />
-        <Text style={{ fontWeight: 700, fontSize: 20 }}>Result: {result}</Text>
+        <Text style={{ fontWeight: "700", fontSize: 20 }}>
+          Result: {result}
+        </Text>
         <TextInput
           placeholder="Enter first number"
-          onChangeText={(firstNumber) => setFirstNumber(firstNumber)}
+          onChangeText={setFirstNumber}
           value={firstNumber}
-          keyboardT
-          ype="numeric"
+          keyboardType="numeric"
           style={styles.input}
         />
         <TextInput
           placeholder="Enter second number"
-          onChangeText={(secondNumber) => setSecondNumber(secondNumber)}
+          onChangeText={setSecondNumber}
           value={secondNumber}
           keyboardType="numeric"
           style={styles.input}
@@ -53,7 +58,14 @@ export default function App() {
       </View>
       <View style={styles.buttonContainer}>
         <Button onPress={addition} title="+" />
-        <Button onPress={substract} title="-" />
+        <Button onPress={subtraction} title="-" />
+      </View>
+      <View style={styles.inputContainer}>
+        <Text style={{ fontWeight: "700", fontSize: 20, margin: 20 }}>History</Text>
+        <FlatList
+          data={operations}
+          renderItem={({ item }) => <Text style={{margin:10}}>{item}</Text>}
+        />
       </View>
     </View>
   );
@@ -73,13 +85,14 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
+    marginTop: 20,
   },
   input: {
     borderColor: "black",
     borderWidth: 1,
     borderRadius: 20,
     height: 40,
-    padding: 20,
+    padding: 10,
     margin: 10,
     width: 200,
   },
